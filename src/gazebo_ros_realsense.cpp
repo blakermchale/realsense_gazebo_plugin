@@ -38,7 +38,7 @@ void GazeboRosRealsense::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
   // RCLCPP_INFO(this->rosnode_->get_logger(), "Realsense Gazebo ROS plugin loading.");
 
   RealSensePlugin::Load(_model, _sdf);
-  this->rosnode_ = rclcpp::Node::make_shared(this->GetHandle());
+  this->rosnode_ = gazebo_ros::Node::Get(_sdf);//rclcpp::Node::make_shared(this->GetHandle());
 
   // initialize camera_info_manager
   this->camera_info_manager_.reset(
@@ -46,10 +46,10 @@ void GazeboRosRealsense::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
 
   this->itnode_ = new image_transport::ImageTransport(this->rosnode_);
 
-  this->color_pub_ = this->itnode_->advertiseCamera("/" + this->GetHandle() + "camera/color/image_raw", 2);
-  this->ir1_pub_ = this->itnode_->advertiseCamera("/" + this->GetHandle() + "camera/ir/image_raw", 2);
-  this->ir2_pub_ = this->itnode_->advertiseCamera("/" + this->GetHandle() + "camera/ir2/image_raw", 2);
-  this->depth_pub_ = this->itnode_->advertiseCamera("/" + this->GetHandle() + "camera/depth/image_raw", 2);
+  this->color_pub_ = this->itnode_->advertiseCamera("~/camera/color/image_raw", 2);
+  this->ir1_pub_ = this->itnode_->advertiseCamera("~/camera/ir/image_raw", 2);
+  this->ir2_pub_ = this->itnode_->advertiseCamera("~/camera/ir2/image_raw", 2);
+  this->depth_pub_ = this->itnode_->advertiseCamera("~/camera/depth/image_raw", 2);
 
   // if (pointCloud_)
   // {

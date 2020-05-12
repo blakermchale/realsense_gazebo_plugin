@@ -11,6 +11,8 @@
 #include <image_transport/image_transport.h>
 #include <camera_info_manager/camera_info_manager.h>
 
+#include <gazebo_ros/node.hpp>
+
 #include <string>
 #include <memory>
 
@@ -41,7 +43,7 @@ namespace gazebo
 
     /// \brief A pointer to the ROS node.
     ///  A node will be instantiated if it does not exist.
-    protected: rclcpp::Node::SharedPtr rosnode_{nullptr};
+    protected: gazebo_ros::Node::SharedPtr rosnode_{nullptr};
     private: image_transport::ImageTransport* itnode_;
     protected: image_transport::CameraPublisher color_pub_, ir1_pub_, ir2_pub_, depth_pub_;
 

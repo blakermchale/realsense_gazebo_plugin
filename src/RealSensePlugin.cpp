@@ -68,8 +68,14 @@ void RealSensePlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
   sensors::SensorManager *smanager = sensors::SensorManager::Instance();
 
   // set camera prefix
-  if (_sdf->HasElement("prefix"))
+  if (_sdf->HasElement("prefix")) {
     prefix = _sdf->Get<std::string>("prefix");
+  }
+  // else {
+  //   prefix = "default::" + _model->GetScopedName() + "::" + "realsense_camera::link::";
+  //   gzerr << prefix;
+  //   gzerr << _model->GetName();
+  // }
 
   // Get Cameras Renderers
   this->depthCam = std::dynamic_pointer_cast<sensors::DepthCameraSensor>(
@@ -84,7 +90,8 @@ void RealSensePlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
   this->colorCam = std::dynamic_pointer_cast<sensors::CameraSensor>(
                                 smanager->GetSensor(prefix+COLOR_CAMERA_NAME))
                                 ->Camera();
-
+  // gzerr << this->depthCam->ScopedName() << ", " << this->ired1Cam->ScopedName() << ", " << this->colorCam->ScopedName();
+  // gzerr << this->depthCam->Name() << ", " << this->ired1Cam->Name() << ", " << this->colorCam->Name();
   // Check if camera renderers have been found successfuly
   if (!this->depthCam)
   {

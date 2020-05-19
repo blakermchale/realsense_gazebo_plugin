@@ -37,6 +37,10 @@ void GazeboRosRealsense::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
   // }
   // RCLCPP_INFO(this->rosnode_->get_logger(), "Realsense Gazebo ROS plugin loading.");
 
+  // gzerr << _sdf->GetParent()->ToString("");
+  // gzerr << _sdf->GetName();
+  // gzerr << _sdf->ToString("");
+  // gzerr << _sdf->Get<std::string>("name");
   RealSensePlugin::Load(_model, _sdf);
   this->rosnode_ = gazebo_ros::Node::Get(_sdf);//rclcpp::Node::make_shared(this->GetHandle());
 

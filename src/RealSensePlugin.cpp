@@ -71,15 +71,14 @@ void RealSensePlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
   if (_sdf->HasElement("prefix")) {
     prefix = _sdf->Get<std::string>("prefix");
   }
-  // else {
-  //   prefix = "default::" + _model->GetScopedName() + "::" + "realsense_camera::link::";
-  //   gzerr << prefix;
-  //   gzerr << _model->GetName();
-  // }
+  else {
+    // prefix = _model->GetWorld()->Name() + "::" + _model->GetScopedName() + "::" + "realsense_camera::link::"; // TODO: Figure out best way to instantiate model, this line is needed when including model via include tag
+    prefix = _model->GetWorld()->Name() + "::" + _model->GetScopedName() + "::link::";
+  }
 
   // Get Cameras Renderers
   this->depthCam = std::dynamic_pointer_cast<sensors::DepthCameraSensor>(
-                                smanager->GetSensor(prefix+DEPTH_CAMERA_NAME))
+                                smanager->GetSensor(DEPTH_CAMERA_NAME))// smanager->GetSensor(prefix+DEPTH_CAMERA_NAME)) // TODO: Add back in when depth scoped name is fixed
                                 ->DepthCamera();
   this->ired1Cam = std::dynamic_pointer_cast<sensors::CameraSensor>(
                                 smanager->GetSensor(prefix+IRED1_CAMERA_NAME))
@@ -90,6 +89,7 @@ void RealSensePlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
   this->colorCam = std::dynamic_pointer_cast<sensors::CameraSensor>(
                                 smanager->GetSensor(prefix+COLOR_CAMERA_NAME))
                                 ->Camera();
+  // TODO: Get rid of below
   // gzerr << this->depthCam->ScopedName() << ", " << this->ired1Cam->ScopedName() << ", " << this->colorCam->ScopedName();
   // gzerr << this->depthCam->Name() << ", " << this->ired1Cam->Name() << ", " << this->colorCam->Name();
   // Check if camera renderers have been found successfuly

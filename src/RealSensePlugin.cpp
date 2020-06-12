@@ -66,16 +66,15 @@ void RealSensePlugin::Load(physics::ModelPtr _model, sdf::ElementPtr _sdf)
 
   // Sensors Manager
   sensors::SensorManager *smanager = sensors::SensorManager::Instance();
-
+  
   // set camera prefix
   if (_sdf->HasElement("prefix")) {
-    prefix = _sdf->Get<std::string>("prefix");
+    prefix = _model->GetWorld()->Name() + "::" + _model->GetScopedName() + "::" + _sdf->Get<std::string>("prefix");
   }
   else {
-    // prefix = _model->GetWorld()->Name() + "::" + _model->GetScopedName() + "::" + "realsense_camera::link::"; // TODO: Figure out best way to instantiate model, this line is needed when including model via include tag
     prefix = _model->GetWorld()->Name() + "::" + _model->GetScopedName() + "::link::";
   }
-
+  
   // Get Cameras Renderers
   this->depthCam = std::dynamic_pointer_cast<sensors::DepthCameraSensor>(
                                 smanager->GetSensor(DEPTH_CAMERA_NAME))// smanager->GetSensor(prefix+DEPTH_CAMERA_NAME)) // TODO: Add back in when depth scoped name is fixed
